@@ -55,6 +55,7 @@ var clock = new THREE.Clock();
 
 // custom global variables
 var MovingCube;
+var collidableMeshList = [];
 var chaseCamera, topCamera;
 var chaseCameraActive = false;
 
@@ -151,24 +152,28 @@ function init()
 		new THREE.TorusKnotGeometry( 30, 6, 160, 10, 2, 5 ), [ colorMaterial, wireMaterial ] );
 	shape.position.set(-200, 50, -200);
 	scene.add( shape );
+	collidableMeshList.push(shape);
 	// torus knot
 	var colorMaterial = new THREE.MeshPhongMaterial( { color: 0x33ff33 } );
 	var shape = THREE.SceneUtils.createMultiMaterialObject( 
 		new THREE.TorusKnotGeometry( 30, 6, 160, 10, 3, 2 ), [ colorMaterial, wireMaterial ] );
 	shape.position.set(200, 50, -200);
 	scene.add( shape );
+	collidableMeshList.push(shape);
 	// torus knot
 	var colorMaterial = new THREE.MeshPhongMaterial( { color: 0xffff33 } );
 	var shape = THREE.SceneUtils.createMultiMaterialObject( 
 		new THREE.TorusKnotGeometry( 30, 6, 160, 10, 4, 3 ), [ colorMaterial, wireMaterial ] );
 	shape.position.set(200, 50, 200);
 	scene.add( shape );
+	collidableMeshList.push(shape);
 	// torus knot
 	var colorMaterial = new THREE.MeshPhongMaterial( { color: 0x3333ff } );
 	var shape = THREE.SceneUtils.createMultiMaterialObject( 
 		new THREE.TorusKnotGeometry( 30, 6, 160, 10, 3, 4 ), [ colorMaterial, wireMaterial ] );
 	shape.position.set(-200, 50, 200);
 	scene.add( shape );
+	collidableMeshList.push(shape);
 	
 	
 }
@@ -182,6 +187,23 @@ function animate()
 
 function update()
 {
+	//******collision\\\\\
+	var originPoint = MovingCube.position.clone();
+
+	
+	for (var vertexIndex = 0; vertexIndex < MovingCube.geometry.vertices.length; vertexIndex++)
+	{		
+		var localVertex = MovingCube.geometry.vertices[vertexIndex].clone();
+		var globalVertex = localVertex.applyMatrix4( MovingCube.matrix );
+		var directionVector = globalVertex.sub( MovingCube.position );
+		
+		var ray = new THREE.Raycaster( originPoint, directionVector.clone().normalize() );
+		var collisionResults = ray.intersectObjects( collidableMeshList );
+		if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
+			console.log(" Hit ");
+	}	
+
+	///************\\\\\
 	var delta = clock.getDelta(); // seconds.
 	var moveDistance = 200 * delta; // 200 pixels per second
 	var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
