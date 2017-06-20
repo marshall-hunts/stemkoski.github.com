@@ -145,14 +145,23 @@ function init()
 	scene.add( ambientlight );
 
 	var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, transparent: true } ); 
+	//collision
+	var wallGeometry = new THREE.CubeGeometry( 100, 100, 20, 1, 1, 1 );
+	var wallMaterial = new THREE.MeshBasicMaterial( {color: 0x8888ff} );
+	var wireMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe:true } );
 	
+	var wall = new THREE.Mesh(wallGeometry, wallMaterial);
+	wall.position.set(100, 50, -100);
+	scene.add(wall);
+	collidableMeshList.push(wall);
+
 	// torus knot
 	var colorMaterial = new THREE.MeshPhongMaterial( { color: 0xff3333 } );
 	var shape1 = THREE.SceneUtils.createMultiMaterialObject( 
 		new THREE.TorusKnotGeometry( 30, 6, 160, 10, 2, 5 ), [ colorMaterial, wireMaterial ] );
 	shape1.position.set(-200, 50, -200);
 	scene.add( shape1 );
-	collidableMeshList.push(shape1);
+	//collidableMeshList.push(shape1);
 	// torus knot
 	var colorMaterial = new THREE.MeshPhongMaterial( { color: 0x33ff33 } );
 	var shape = THREE.SceneUtils.createMultiMaterialObject( 
