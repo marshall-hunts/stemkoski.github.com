@@ -188,7 +188,7 @@ function animate()
 function update()
 {
 	//******collision\\\\\
-	/*var originPoint = MovingCube.position.clone();
+	var originPoint = MovingCube.position.clone();
 
 	
 	for (var vertexIndex = 0; vertexIndex < MovingCube.geometry.vertices.length; vertexIndex++)
@@ -202,7 +202,7 @@ function update()
 		if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
 			console.log(" Hit ");
 	}	
-*/
+
 	///************\\\\\
 	var delta = clock.getDelta(); // seconds.
 	var moveDistance = 200 * delta; // 200 pixels per second
